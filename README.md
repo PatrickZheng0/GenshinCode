@@ -1,1 +1,1 @@
-# GenshinWishCalculator
+# GenshinCode
