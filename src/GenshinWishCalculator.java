@@ -1,6 +1,6 @@
 import java.util.ArrayList;
 
-public class With4Star_GenshinWishCalc {
+public class GenshinWishCalculator {
 
 	public static void main(String[] args) {
 
