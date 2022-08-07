@@ -5,6 +5,7 @@ public class GenshinWishCalculator {
 	public static void main(String[] args) {
 
 		ArrayList<Double> patrickPulls = percentPullAll(20, 1, 0, 0, 0, false, 0, "char", 50000);
+		Double weps = percentPullWep(68, 1, 0, 50000, true, 0).get(0);
 // (numPulls, numChar, numWep, charPity, wepPity, charGuarantee, wepEpitomizePity, "char" or "wep", simAmt)
 
 		Double fourStarPulls = percentPull4Star(62, 3, 0, 50000, true, false);
@@ -12,8 +13,7 @@ public class GenshinWishCalculator {
 
 		
 //		System.out.println(patrickPulls);
-		System.out.println(fourStarPulls);
-		System.out.println(pullNeed);
+		System.out.println(weps);
 		System.out.println("amount of pulls left is wrong");
 		//pity doesn't seem to work well with numpulls left value
 		
@@ -109,9 +109,26 @@ public class GenshinWishCalculator {
 		}
 		
 		return pull;
+	}
+	
+	public static int wishForWep4Star(double percentage, int num4Star, int pity, int simAmt, boolean want5050, boolean guarantee) {
+		
+		int pull = 0;
 			
+		int numPulls = 0;
 		
+		while (percentage > percentPullWep4Star(numPulls, num4Star, pity, simAmt, want5050, guarantee)) {
+			numPulls += 10;
+		}
 		
+		for (int j = numPulls - 10; j <= numPulls; j++) {
+			if (percentPullWep4Star(j, num4Star, pity, simAmt, want5050, guarantee) > percentage) {
+				pull = j;
+				break;
+			}
+		}
+		
+		return pull;
 	}
 	
 	
@@ -120,6 +137,23 @@ public class GenshinWishCalculator {
 		while (simAmt > 0) {
 			//System.out.println("sim#: " + simAmt);
 			fourStar.add(sim4Star(numPulls, num4Star, pity, want5050, guarantee).get(0));
+			simAmt--;
+		}
+		
+		double count = 0;
+		for (int i : fourStar) {
+			if (i >= num4Star) {
+				count++;
+			}
+		}
+		return 100 * count / fourStar.size();
+	}
+	
+	public static double percentPullWep4Star(int numPulls, int num4Star, int pity, int simAmt, boolean want5050, boolean guarantee) {
+		ArrayList<Integer> fourStar = new ArrayList<>();
+		while (simAmt > 0) {
+			//System.out.println("sim#: " + simAmt);
+			fourStar.add(simWep4Star(numPulls, num4Star, pity, want5050, guarantee).get(0));
 			simAmt--;
 		}
 		
@@ -226,6 +260,102 @@ public class GenshinWishCalculator {
 			charInfo.add(fourStar);
 			charInfo.add(numPulls);
 			return charInfo;
+		}
+	}
+	
+	public static ArrayList<Integer> simWep4Star(int numPulls, int numWant4Star, int pity, boolean want5050, boolean guarantee) {
+		ArrayList<Integer> wepInfo = new ArrayList<>();
+		ArrayList<Integer> pullsWep = new ArrayList<>();
+		int fourStar = 0;
+		int numGood4Star = 0;
+		int pullsTook = 0;
+		int num1;
+		int initPity = pity;
+		boolean fourStarGood = true;
+		
+		if (initPity + numPulls > 10) {
+			num1 = 10;
+		} else num1 = initPity + numPulls;
+
+		while (numPulls > 0) {
+			
+			//stops pulling once reached target amt of 4*s
+			if ((numGood4Star >= numWant4Star) && (fourStar >= numWant4Star)) break;
+			
+			double percent = 60;
+			
+			for (int j = initPity + 1; j <= num1; j++) {
+
+				if (j == 9) {
+					percent = 53;
+				} else if (j == 10) {
+					percent = 1000;
+				}
+
+				
+				double rand2 = Math.random() * 5;
+				
+				if (Math.random() * 1000 < percent) {
+					pullsWep.add(j);
+					//System.out.println(j);
+					if (want5050) {
+					
+//						5050 code
+						if (guarantee) {
+							if (rand2 < 1) {
+							//got wanted 4*
+								fourStarGood = true;
+							} else {
+								fourStarGood = false;
+							}
+							guarantee = false;
+						} else if (fourStarGood) {
+							if (Math.random() * 4 < 3) {
+								//missed 5050
+								fourStarGood = false;
+							} else if (rand2 < 1) {
+								fourStarGood = true;
+							} else {
+								fourStarGood = false;
+							}
+						} else {
+							if (rand2 < 1) {
+								fourStarGood = true;
+							}
+						}
+					
+						if (fourStarGood) {
+							numGood4Star++;
+						}
+//						5050 code end
+					}
+					
+					fourStar++;
+					pullsTook = j - initPity;
+					initPity = 0;
+					break;
+				}
+			}
+				
+			numPulls -= pullsTook;
+			if (numPulls > 10) {
+				num1 = 10;
+			} else {
+				num1 = numPulls;
+				numPulls = 0;
+			}
+			
+		}
+		
+		
+		if (want5050) {
+			wepInfo.add(numGood4Star);
+			wepInfo.add(numPulls);
+			return wepInfo;
+		} else {
+			wepInfo.add(fourStar);
+			wepInfo.add(numPulls);
+			return wepInfo;
 		}
 	}
 	
