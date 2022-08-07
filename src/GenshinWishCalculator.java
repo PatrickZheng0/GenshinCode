@@ -16,8 +16,6 @@ public class GenshinWishCalculator {
 		System.out.println(weps);
 		System.out.println("amount of pulls left is wrong");
 		//pity doesn't seem to work well with numpulls left value
-		
-		
 	}
 	
 	public static ArrayList<Integer> simAll(int numPulls, int numChar, int numWep, int charPity, int wepPity, boolean guaranteeChar, int ePity, String prioritize) {
@@ -664,7 +662,6 @@ public class GenshinWishCalculator {
 		wepPercentInfo.add(count3 / fiveStarBannerBad.size());
 		
 		return wepPercentInfo;
-
 	}
 	
 }
