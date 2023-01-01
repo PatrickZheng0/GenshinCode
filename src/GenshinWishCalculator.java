@@ -4,16 +4,17 @@ public class GenshinWishCalculator {
 
 	public static void main(String[] args) {
 
-		ArrayList<Double> patrickPulls = percentPullAll(20, 1, 0, 0, 0, false, 0, "char", 50000);
+		ArrayList<Double> patrickPulls = percentPullAll(180, 5, 0, 0, 0, false, 0, "char", 50000);
 		Double weps = percentPullWep(68, 1, 0, 50000, true, 0).get(0);
 // (numPulls, numChar, numWep, charPity, wepPity, charGuarantee, wepEpitomizePity, "char" or "wep", simAmt)
 
 		Double fourStarPulls = percentPull4Star(62, 3, 0, 50000, true, false);
 		int pullNeed = wishFor4Star(80, 3, 0, 20000, true, false);
 
+// TODO: on 10th pull 5* take precedence > 4* so 4* can be on 11
 		
-//		System.out.println(patrickPulls);
-		System.out.println(weps);
+		System.out.println(patrickPulls);
+//		System.out.println(weps);
 		System.out.println("amount of pulls left is wrong");
 		//pity doesn't seem to work well with numpulls left value
 	}
@@ -189,7 +190,7 @@ public class GenshinWishCalculator {
 			for (int j = initPity + 1; j <= num1; j++) {
 
 				if (j == 9) {
-					percent = 525;
+					percent = 561;
 				} else if (j == 10) {
 					percent = 1000;
 				}
@@ -285,7 +286,7 @@ public class GenshinWishCalculator {
 			for (int j = initPity + 1; j <= num1; j++) {
 
 				if (j == 9) {
-					percent = 53;
+					percent = 660;
 				} else if (j == 10) {
 					percent = 1000;
 				}
@@ -381,40 +382,8 @@ public class GenshinWishCalculator {
 			
 			for (int j = initPity; j <= num1; j++) {
 
-				if (j == 74) {
-					percent = 69.4;
-				} else if (j == 75) {
-					percent = 128.3;
-				} else if (j == 76) {
-					percent = 189.6;
-				} else if (j == 77) {
-					percent = 247.7;
-				} else if (j == 78) {
-					percent = 306.9;
-				} else if (j == 79) {
-					percent = 363.6;
-				} else if (j == 80) {
-					percent = 427.9;
-				} else if (j == 81) {
-					percent = 483.9;
-				} else if (j == 82) {
-					percent = 543.6;
-				} else if (j == 83) {
-					percent = 596.1;
-				} else if (j == 84) {
-					percent = 657.1;
-				} else if (j == 85) {
-					percent = 725;
-				} else if (j == 86) {
-					percent = 787.9;
-				} else if (j == 87) {
-					percent = 843.3;
-				} else if (j == 88) {
-					percent = 902.7;
-				} else if (j == 89) {
-					percent = 962.1;
-				} else if (j == 90) {
-					percent = 1000;
+				if (j >= 74) {
+					percent = 6 + (j - 73) * 60;
 				}
 				
 				if (Math.random() * 1000 < percent) {
@@ -514,42 +483,8 @@ public class GenshinWishCalculator {
 			
 			for (int j = initPity; j <= num1; j++) {
 
-				if (j == 63) {
-					percent = 86.5;
-				} else if (j == 64) {
-					percent = 155.4;
-				} else if (j == 65) {
-					percent = 222;
-				} else if (j == 66) {
-					percent = 283.9;
-				} else if (j == 67) {
-					percent = 361.4;
-				} else if (j == 68) {
-					percent = 424.9;
-				} else if (j == 69) {
-					percent = 495.1;
-				} else if (j == 70) {
-					percent = 558.5;
-				} else if (j == 71) {
-					percent = 626.2;
-				} else if (j == 72) {
-					percent = 693.9;
-				} else if (j == 73) {
-					percent = 761.6;
-				} else if (j == 74) {
-					percent = 829.3;
-				} else if (j == 75) {
-					percent = 897;
-				} else if (j == 76) {
-					percent = 964.7;
-				} else if (j == 77) {
-					percent = 990.35;
-				} else if (j == 78) {
-					percent = 992.22;
-				} else if (j == 79) {
-					percent = 993.48;
-				} else if (j == 80) {
-					percent = 1000;
+				if (j >= 63) {
+					percent = 7 + (j - 62) * 70;
 				}
 				
 				if (Math.random() * 1000 < percent) {
